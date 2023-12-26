@@ -12,6 +12,7 @@ from LR1 import LR1
 from LR2 import LR2
 from LR1.LR1 import average_age
 from LR2.LR2 import find_in_different_registers
+from LR7.LR7 import chain_sum
 import pandas as pd
 
 
@@ -103,5 +104,30 @@ class TestFunctions(unittest.TestCase):
         expected_result = ['Orange', 'Banana', 'Grapes']
         self.assertEqual(result, expected_result)
 
+    def chain_sum(value):
+        def inner(*args):
+            return value + sum(args)
+
+        return inner
+
+    def test_single_value(self):
+        result = chain_sum(5)()
+        assert result == 5
+
+    def test_chain_sum(self):
+        result = chain_sum(5)(2)()
+        assert result == 7
+
+    def test_multiple_values(self):
+        result = chain_sum(5)(100)(-10)()
+        assert result == 95
+
+    def test_chain_with_zeros(self):
+        result = chain_sum(0)(0)(0)(0)()
+        assert result == 0
+
+    def test_negative_values(self):
+        result = chain_sum(-5)(-10)(3)(7)()
+        assert result == -5
 if __name__ == '__main__':
     unittest.main()
