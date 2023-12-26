@@ -12,21 +12,16 @@
 #LR10- Генерация файлов в форматах CSV, JSON и YAML
 #LR11- Реализация UI приложения
 import pandas as pd
-from fastapi import FastAPI, File, UploadFile, Depends
+from fastapi import File, UploadFile, Depends
 from fastapi.responses import JSONResponse
 import LR1
 import LR2
-from sqlalchemy import create_engine, Column, String, Boolean, MetaData, Table, Integer
+from sqlalchemy import create_engine, Column, String, Boolean, Integer
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm import declarative_base
 from sqlalchemy.orm import Session
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
-from typing import List
-
-
-
-
 
 DATABASE_URL = "postgresql+psycopg://postgres:aB89027311@localhost/postgres?client_encoding=utf8"
 
@@ -89,7 +84,7 @@ async def average_age_by_position(file: UploadFile = File(...)) -> JSONResponse:
 @app.post("/reg_filter")
 async def find_in_different_registers(words: list[str])-> JSONResponse:
     try:
-        result=LR2.find_in_different_registers(words)
+        result= LR2.find_in_different_registers(words)
         return JSONResponse(content=result)
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))

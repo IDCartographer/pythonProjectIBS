@@ -2,10 +2,20 @@ import unittest
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from main import app, get_db, TaskCreate, TaskUpdate
-from LR1 import average_age
-from LR2 import find_in_different_registers
+import os
+
+import sys
+project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+sys.path.append(project_root)
+from ..main import app
+from LR1 import LR1
+from LR2 import LR2
+from LR1.LR1 import average_age
+from LR2.LR2 import find_in_different_registers
 import pandas as pd
+
+
+
 DATABASE_URL_TEST = "postgresql+psycopg:///./test.db"
 
 engine_test = create_engine(DATABASE_URL_TEST)
