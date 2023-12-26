@@ -3,10 +3,6 @@ import pandas as pd
 from fastapi import FastAPI, File, UploadFile, HTTPException
 from fastapi.responses import JSONResponse
 
-
-
-
-
 def average_age(data_cvs: pd.DataFrame) -> dict:
     try:
         # Проверка наличия необходимых столбцов

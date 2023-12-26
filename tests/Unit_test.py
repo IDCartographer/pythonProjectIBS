@@ -3,27 +3,41 @@ from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 import os
-
 import sys
 project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 sys.path.append(project_root)
 from ..main import app
-from LR1 import LR1
-from LR2 import LR2
 from LR1.LR1 import average_age
 from LR2.LR2 import find_in_different_registers
 from LR7.LR7 import chain_sum
+from LR8.LR8 import int_to_roman
 import pandas as pd
 
 
 
 DATABASE_URL_TEST = "postgresql+psycopg:///./test.db"
-
+client=TestClient(app)
 engine_test = create_engine(DATABASE_URL_TEST)
 TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine_test)
 
 
 class TestAPI(unittest.TestCase):
+    from fastapi.testclient import TestClient
+    from main import app
+
+    client = TestClient(app)
+
+    from fastapi.testclient import TestClient
+    from main import app
+
+    client = TestClient(app)
+
+    def test_int_to_roman(self):
+        assert int_to_roman(1) == "I"
+        assert int_to_roman(4) == "IV"
+        assert int_to_roman(9) == "IX"
+
+
     def setUp(self):
         # Инициализация временной базы данных для тестирования
         self.db = TestingSessionLocal()
@@ -98,10 +112,10 @@ class TestFunctions(unittest.TestCase):
 #Тест функции проверки повторов с регистром
     def test_find_in_different_registers(self):
         # Тестовые данные
-        test_words = ['apple', 'Orange', 'Banana', 'apple', 'Grapes']
+        test_words = ['дед', 'капуста', 'дед']
 
         result = find_in_different_registers(test_words)
-        expected_result = ['Orange', 'Banana', 'Grapes']
+        expected_result = ['капуста']
         self.assertEqual(result, expected_result)
 
     def chain_sum(value):
@@ -109,6 +123,7 @@ class TestFunctions(unittest.TestCase):
             return value + sum(args)
 
         return inner
+
 
     def test_single_value(self):
         result = chain_sum(5)()

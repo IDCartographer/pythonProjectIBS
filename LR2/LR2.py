@@ -18,5 +18,5 @@ def find_in_different_registers(words: list[str]):
     return result
 
 
-print(find_in_different_registers(words))
+
 

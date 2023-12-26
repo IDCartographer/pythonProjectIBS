@@ -10,18 +10,20 @@
 #LR8- Конвертер из integer в Римские цифры
 #LR9- API для хранения файлов
 #LR10- Генерация файлов в форматах CSV, JSON и YAML
+#LR11- Логирование в FastAPI с использованием middleware
 #LR11- Реализация UI приложения
 import pandas as pd
 from fastapi import File, UploadFile, Depends
 from fastapi.responses import JSONResponse
-import LR1
-import LR2
+import LR1.LR1
+import LR2.LR2
 from sqlalchemy import create_engine, Column, String, Boolean, Integer
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm import declarative_base
 from sqlalchemy.orm import Session
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
+import LR8.LR8
 
 DATABASE_URL = "postgresql+psycopg://postgres:aB89027311@localhost/postgres?client_encoding=utf8"
 
@@ -71,7 +73,7 @@ async def average_age_by_position(file: UploadFile = File(...)) -> JSONResponse:
         DataFrame = pd.read_csv(file.file)
 
         # Вызов функции и возврат результата
-        result = LR1.average_age(DataFrame)
+        result = LR1.LR1.average_age(DataFrame)
         return JSONResponse(content=result)
 
     except pd.errors.EmptyDataError:
@@ -84,7 +86,7 @@ async def average_age_by_position(file: UploadFile = File(...)) -> JSONResponse:
 @app.post("/reg_filter")
 async def find_in_different_registers(words: list[str])-> JSONResponse:
     try:
-        result= LR2.find_in_different_registers(words)
+        result= LR2.LR2.find_in_different_registers(words)
         return JSONResponse(content=result)
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
@@ -137,6 +139,16 @@ async def delete_task(task_id: int):
 
 #LR3,4 END
 
+#LR8 Конвертер из integer в Римские цифры
+@app.post("/int_to_roman")
+def convert_to_roman(number: int) -> str:
+    if not 1 <= number <= 3999:
+        raise HTTPException(status_code=400, detail="Number must be between 1 and 3999")
+    roman_num = LR8.LR8.int_to_roman(number)
+    return roman_num
 
+print(LR8.LR8.int_to_roman(5))
+
+#LR8 end
 
 
