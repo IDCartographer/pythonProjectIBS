@@ -11,7 +11,7 @@
 #LR9- API для хранения файлов
 #LR10- Генерация файлов в форматах CSV, JSON и YAML
 #LR11- Логирование в FastAPI с использованием middleware
-#LR11- Реализация UI приложения
+#LR12- Реализация UI приложения
 import pandas as pd
 from fastapi import File, UploadFile, Depends
 from fastapi.responses import JSONResponse
@@ -21,11 +21,20 @@ from sqlalchemy import create_engine, Column, String, Boolean, Integer
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm import declarative_base
 from sqlalchemy.orm import Session
-from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 import LR8.LR8
+from fastapi import FastAPI, UploadFile, HTTPException
+from fastapi import FastAPI, Request, Response
+from fastapi import FastAPI, HTTPException
+from fastapi.middleware import Middleware
+from fastapi.middleware.trustedhost import TrustedHostMiddleware
+from datetime import datetime
+import logging
+
 
 DATABASE_URL = "postgresql+psycopg://postgres:aB89027311@localhost/postgres?client_encoding=utf8"
+UPLOAD_DIR = "uploads"
+
 
 
 engine = create_engine(DATABASE_URL, client_encoding='UTF-8')
@@ -148,7 +157,48 @@ def convert_to_roman(number: int) -> str:
     return roman_num
 
 print(LR8.LR8.int_to_roman(5))
-
 #LR8 end
+#LR11
+
+logging.basicConfig(
+    filename="app.log",
+    level=logging.INFO,
+    format="[%(asctime)s] {%(filename)s:%(lineno)d} %(levelname)-8s | %(message)s",
+    datefmt="%Y-%m-%d %H:%M:%S"
+)
+
+# Пример middleware для логирования
+class LoggingMiddleware:
+    def __init__(self, app):
+        self.app = app
+
+    async def __call__(self, scope, receive, send):
+        # Время начала выполнения запроса
+        start_time = datetime.utcnow()
+
+        async def _send(message):
+            if message["type"] == "http.response.start":
+                # Время окончания выполнения запроса
+                end_time = datetime.utcnow()
+
+                # Вычисление времени выполнения запроса в секундах
+                execution_time_sec = (end_time - start_time).total_seconds()
+
+                # Логирование информации о запросе
+                logging.info(
+                    f"[{end_time}] {scope.get('file') or 'unknown'}:{scope.get('line') or 'unknown'} "
+                    f"{message['status']} | {execution_time_sec:.2f} | {scope['method']} | {scope['path']}"
+                )
+
+            return await send(message)
+
+        return await self.app(scope, receive, _send)
+
+
+# Подключение middleware
+app.add_middleware(LoggingMiddleware)
+
+#LR11 end
+
 
 

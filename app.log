@@ -1,0 +1,4 @@
+[2023-12-26 22:04:29] {main.py:188} INFO     | [2023-12-26 19:04:29.238240] unknown:unknown 200 | 0.00 | GET | /docs
+[2023-12-26 22:04:29] {main.py:188} INFO     | [2023-12-26 19:04:29.551100] unknown:unknown 200 | 0.00 | GET | /openapi.json
+[2023-12-26 22:04:40] {main.py:188} INFO     | [2023-12-26 19:04:40.174067] unknown:unknown 400 | 0.01 | POST | /int_to_roman
+[2023-12-26 22:04:50] {main.py:188} INFO     | [2023-12-26 19:04:50.388856] unknown:unknown 200 | 0.00 | POST | /int_to_roman
