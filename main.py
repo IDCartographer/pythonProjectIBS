@@ -168,6 +168,40 @@ def convert_to_roman(number: int) -> str:
 
 print(LR8.LR8.int_to_roman(5))
 #LR8 end
+#LR9 API для хранения файлов
+#имеется проблема, файл то он сохраняет, но не сохраняет формат файла. Хотя при открытии все данные впорядке
+@app.post("/upload_file")
+async def upload_file(file: UploadFile = File(...), archive: bool = Form(False)):
+    file_id = str(uuid.uuid4())
+    file_path = os.path.join(app.config['UPLOAD_FOLDER'], file_id)
+
+    with open(file_path, "wb") as f:
+        f.write(file.file.read())
+    if archive:
+        with zipfile.ZipFile(file_path + '.zip', 'w') as zip_file:
+            zip_file.write(file_path, os.path.basename(file_path))
+        os.remove(file_path)
+
+        return {'file_id': file_id, 'archived': True}
+    else:
+        return {'file_id': file_id, 'archived': False}
+
+
+@app.get("/download_file/{file_id}")
+async def download_file(file_id: str):
+    file_path = os.path.join(app.config['UPLOAD_FOLDER'], file_id)
+
+    if not os.path.exists(file_path):
+        raise HTTPException(status_code=404, detail="File not found")
+
+    if os.path.exists(file_path + '.zip'):
+        return StreamingResponse(open(file_path + '.zip', 'rb'), media_type='application/zip',
+                                  headers={"Content-Disposition": f"attachment; filename={file_id}.zip"})
+    else:
+        return FileResponse(file_path, media_type='application/octet-stream',
+                            headers={"Content-Disposition": f"attachment; filename={file_id}"})
+
+#LR9 END
 
 
 #LR11 Логирование в FastAPI с использованием middleware
@@ -209,40 +243,6 @@ app.add_middleware(LoggingMiddleware)
 
 #LR11 end
 
-#LR9 API для хранения файлов
-#имеется проблема, файл то он сохраняет, но не сохраняет формат файла. Хотя при открытии все данные впорядке
-@app.post("/upload_file")
-async def upload_file(file: UploadFile = File(...), archive: bool = Form(False)):
-    file_id = str(uuid.uuid4())
-    file_path = os.path.join(app.config['UPLOAD_FOLDER'], file_id)
-
-    with open(file_path, "wb") as f:
-        f.write(file.file.read())
-    if archive:
-        with zipfile.ZipFile(file_path + '.zip', 'w') as zip_file:
-            zip_file.write(file_path, os.path.basename(file_path))
-        os.remove(file_path)
-
-        return {'file_id': file_id, 'archived': True}
-    else:
-        return {'file_id': file_id, 'archived': False}
-
-
-@app.get("/download_file/{file_id}")
-async def download_file(file_id: str):
-    file_path = os.path.join(app.config['UPLOAD_FOLDER'], file_id)
-
-    if not os.path.exists(file_path):
-        raise HTTPException(status_code=404, detail="File not found")
-
-    if os.path.exists(file_path + '.zip'):
-        return StreamingResponse(open(file_path + '.zip', 'rb'), media_type='application/zip',
-                                  headers={"Content-Disposition": f"attachment; filename={file_id}.zip"})
-    else:
-        return FileResponse(file_path, media_type='application/octet-stream',
-                            headers={"Content-Disposition": f"attachment; filename={file_id}"})
-
-#LR9 END
 
 #LR12 UI
 templates = Jinja2Templates(directory="templates")
