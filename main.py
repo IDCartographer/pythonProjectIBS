@@ -23,17 +23,18 @@ from sqlalchemy.orm import declarative_base
 from sqlalchemy.orm import Session
 from pydantic import BaseModel
 import LR8.LR8
-from fastapi import FastAPI, UploadFile, HTTPException
-from fastapi import FastAPI, Request, Response
-from fastapi import FastAPI, HTTPException
-from fastapi.middleware import Middleware
-from fastapi.middleware.trustedhost import TrustedHostMiddleware
+from fastapi.responses import FileResponse
 from datetime import datetime
 import logging
+from fastapi import FastAPI, File, UploadFile, HTTPException, Form
+import os
+import zipfile
+import uuid
+from starlette.responses import StreamingResponse
 
 
 DATABASE_URL = "postgresql+psycopg://postgres:aB89027311@localhost/postgres?client_encoding=utf8"
-UPLOAD_DIR = "uploads"
+
 
 
 
@@ -73,7 +74,13 @@ def get_db():
         db.close()
 app=FastAPI()
 
+UPLOAD_FOLDER = 'uploads'
 
+app.config = {'UPLOAD_FOLDER': UPLOAD_FOLDER}
+
+
+def allowed_file(filename):
+    return '.' in filename
 #LR1-average_age_by_position 1.2
 @app.post("/average_age_by_position")
 async def average_age_by_position(file: UploadFile = File(...)) -> JSONResponse:
@@ -199,5 +206,38 @@ app.add_middleware(LoggingMiddleware)
 
 #LR11 end
 
+#LR9 API для хранения файлов
+#имеется проблема, файл то он сохраняет, но не сохраняет формат файла. Хотя при открытии все данные впорядке
+@app.post("/upload_file")
+async def upload_file(file: UploadFile = File(...), archive: bool = Form(False)):
+    file_id = str(uuid.uuid4())
+    file_path = os.path.join(app.config['UPLOAD_FOLDER'], file_id)
 
+    with open(file_path, "wb") as f:
+        f.write(file.file.read())
+    if archive:
+        with zipfile.ZipFile(file_path + '.zip', 'w') as zip_file:
+            zip_file.write(file_path, os.path.basename(file_path))
+        os.remove(file_path)
+
+        return {'file_id': file_id, 'archived': True}
+    else:
+        return {'file_id': file_id, 'archived': False}
+
+
+@app.get("/download_file/{file_id}")
+async def download_file(file_id: str):
+    file_path = os.path.join(app.config['UPLOAD_FOLDER'], file_id)
+
+    if not os.path.exists(file_path):
+        raise HTTPException(status_code=404, detail="File not found")
+
+    if os.path.exists(file_path + '.zip'):
+        return StreamingResponse(open(file_path + '.zip', 'rb'), media_type='application/zip',
+                                  headers={"Content-Disposition": f"attachment; filename={file_id}.zip"})
+    else:
+        return FileResponse(file_path, media_type='application/octet-stream',
+                            headers={"Content-Disposition": f"attachment; filename={file_id}"})
+
+#LR9 END
 

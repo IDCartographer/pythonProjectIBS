@@ -2,3 +2,17 @@
 [2023-12-26 22:04:29] {main.py:188} INFO     | [2023-12-26 19:04:29.551100] unknown:unknown 200 | 0.00 | GET | /openapi.json
 [2023-12-26 22:04:40] {main.py:188} INFO     | [2023-12-26 19:04:40.174067] unknown:unknown 400 | 0.01 | POST | /int_to_roman
 [2023-12-26 22:04:50] {main.py:188} INFO     | [2023-12-26 19:04:50.388856] unknown:unknown 200 | 0.00 | POST | /int_to_roman
+[2023-12-27 11:53:01] {main.py:195} INFO     - | [2023-12-27 08:53:01.070704] unknown:unknown 404 | 0.00 | GET | / |
+[2023-12-27 11:53:04] {main.py:195} INFO     - | [2023-12-27 08:53:04.651878] unknown:unknown 200 | 0.00 | GET | /docs |
+[2023-12-27 11:53:04] {main.py:195} INFO     - | [2023-12-27 08:53:04.870166] unknown:unknown 200 | 0.01 | GET | /openapi.json |
+[2023-12-27 11:53:14] {main.py:195} INFO     - | [2023-12-27 08:53:14.132462] unknown:unknown 200 | 0.02 | POST | /upload_file |
+[2023-12-27 11:53:59] {main.py:195} INFO     - | [2023-12-27 08:53:59.067606] unknown:unknown 200 | 0.02 | GET | /download_file/dabf8fb4-507a-4184-980a-671146a31ded |
+[2023-12-27 11:56:16] {main.py:195} INFO     - | [2023-12-27 08:56:16.092553] unknown:unknown 200 | 0.00 | GET | /docs |
+[2023-12-27 11:56:16] {main.py:195} INFO     - | [2023-12-27 08:56:16.341387] unknown:unknown 200 | 0.01 | GET | /openapi.json |
+[2023-12-27 11:56:30] {main.py:195} INFO     - | [2023-12-27 08:56:30.262046] unknown:unknown 200 | 0.03 | POST | /upload_file |
+[2023-12-27 11:56:41] {main.py:195} INFO     - | [2023-12-27 08:56:41.930381] unknown:unknown 404 | 0.00 | GET | /download_file/28b9f2ae-6337-410a-82d7-890cb0c518cb |
+[2023-12-27 11:57:02] {main.py:195} INFO     - | [2023-12-27 08:57:02.727569] unknown:unknown 200 | 0.01 | GET | /download_file/28b9f2ae-6337-410a-82d7-890cb0c518cb.zip |
+[2023-12-27 11:59:17] {main.py:195} INFO     - | [2023-12-27 08:59:17.592980] unknown:unknown 200 | 0.00 | GET | /docs |
+[2023-12-27 11:59:17] {main.py:195} INFO     - | [2023-12-27 08:59:17.842654] unknown:unknown 200 | 0.01 | GET | /openapi.json |
+[2023-12-27 11:59:26] {main.py:195} INFO     - | [2023-12-27 08:59:26.663541] unknown:unknown 200 | 0.01 | POST | /upload_file |
+[2023-12-27 11:59:39] {main.py:195} INFO     - | [2023-12-27 08:59:39.153941] unknown:unknown 200 | 0.02 | GET | /download_file/6f650ee6-4492-4df1-bfae-a95c7fcf05d9 |
