@@ -36,7 +36,7 @@ from fastapi import Request
 from fastapi.responses import HTMLResponse
 
 
-DATABASE_URL = "postgresql+psycopg://postgres:aB89027311@localhost/postgres?client_encoding=utf8"
+DATABASE_URL = "postgresql+psycopg://postgres:postgres@localhost/postgres?client_encoding=utf8"
 
 
 

@@ -9,7 +9,7 @@ RUN python -m pip install --upgrade pip && \
 COPY . .
 
 ENV POSTGRES_USER=postgres \
-    POSTGRES_PASSWORD=aB89027311 \
+    POSTGRES_PASSWORD=postgres \
     POSTGRES_HOST=host.docker.internal \
     POSTGRES_PORT=5432 \
     POSTGRES_DB=postgres
