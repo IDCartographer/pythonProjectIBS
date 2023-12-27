@@ -39,3 +39,7 @@
 [2023-12-27 12:48:03] {main.py:198} INFO     - | [2023-12-27 09:48:03.211434] unknown:unknown 405 | 0.00 | GET | /int_to_roman |
 [2023-12-27 12:50:06] {main.py:198} INFO     - | [2023-12-27 09:50:06.690754] unknown:unknown 405 | 0.00 | GET | / |
 [2023-12-27 13:51:33] {main.py:198} INFO     - | [2023-12-27 10:51:33.566373] unknown:unknown 405 | 0.00 | GET | / |
+[2023-12-27 13:51:44] {main.py:198} INFO     - | [2023-12-27 10:51:44.100516] unknown:unknown 200 | 0.01 | GET | / |
+[2023-12-27 13:51:44] {main.py:198} INFO     - | [2023-12-27 10:51:44.395773] unknown:unknown 404 | 0.00 | GET | /favicon.ico |
+[2023-12-27 13:52:56] {main.py:198} INFO     - | [2023-12-27 10:52:56.686325] unknown:unknown 200 | 0.00 | GET | / |
+[2023-12-27 13:52:56] {main.py:198} INFO     - | [2023-12-27 10:52:56.952839] unknown:unknown 404 | 0.00 | GET | /favicon.ico |
