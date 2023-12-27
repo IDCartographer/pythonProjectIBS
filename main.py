@@ -158,16 +158,19 @@ def convert_to_roman(number: int) -> str:
 
 print(LR8.LR8.int_to_roman(5))
 #LR8 end
-#LR11
+
+
+#LR11 Логирование в FastAPI с использованием middleware
 
 logging.basicConfig(
     filename="app.log",
     level=logging.INFO,
-    format="[%(asctime)s] {%(filename)s:%(lineno)d} %(levelname)-8s | %(message)s",
+    format="[%(asctime)s] {%(filename)s:%(lineno)d} %(levelname)-8s - | %(message)s |",
     datefmt="%Y-%m-%d %H:%M:%S"
 )
 
-# Пример middleware для логирования
+
+
 class LoggingMiddleware:
     def __init__(self, app):
         self.app = app
@@ -180,10 +183,7 @@ class LoggingMiddleware:
             if message["type"] == "http.response.start":
                 # Время окончания выполнения запроса
                 end_time = datetime.utcnow()
-
-                # Вычисление времени выполнения запроса в секундах
                 execution_time_sec = (end_time - start_time).total_seconds()
-
                 # Логирование информации о запросе
                 logging.info(
                     f"[{end_time}] {scope.get('file') or 'unknown'}:{scope.get('line') or 'unknown'} "
@@ -195,7 +195,6 @@ class LoggingMiddleware:
         return await self.app(scope, receive, _send)
 
 
-# Подключение middleware
 app.add_middleware(LoggingMiddleware)
 
 #LR11 end
