@@ -31,6 +31,9 @@ import os
 import zipfile
 import uuid
 from starlette.responses import StreamingResponse
+from fastapi.templating import Jinja2Templates
+from fastapi import Request
+from fastapi.responses import HTMLResponse
 
 
 DATABASE_URL = "postgresql+psycopg://postgres:aB89027311@localhost/postgres?client_encoding=utf8"
@@ -241,3 +244,8 @@ async def download_file(file_id: str):
 
 #LR9 END
 
+#LR12 UI
+templates = Jinja2Templates(directory="templates")
+@app.get("/", response_class=HTMLResponse)
+async def read_item(request: Request):
+    return templates.TemplateResponse("index.html", {"request": request})

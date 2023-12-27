@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roman Numeral Converter</title>
+</head>
+<body>
+    <h1>Roman Numeral Converter</h1>
+    <form id="conversion-form" method="post">
+        <textarea id="input-number" placeholder="Enter Arabic number"></textarea>
+        <button type="button" onclick="convert()">Convert</button>
+        <textarea id="output-roman" placeholder="Roman numeral result" readonly></textarea>
+    </form>
+
+    <script>
+        async function convert() {
+            const inputNumber = document.getElementById("input-number").value;
+            const response = await fetch(`/int_to_roman?number=${inputNumber}`);
+            const result = await response.text();
+            document.getElementById("output-roman").value = result;
+        }
+    </script>
+</body>
+</html>
